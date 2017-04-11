@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        td {
+            text-align: center;
+        }
+    </style>
+    <script>
+
+        //在页面加载完成的时候，把下面这个数据动态添加到表格中
+        var data = [
+            {
+                 'id' : 1,
+                'username' : 'LEO',
+                'age' : 36,
+                'sex' : '男'
+            },
+            {
+                'id' : 2,
+                'username' : 'MOMO',
+                'age' : 26,
+                'sex' : '男'
+            },
+            {
+                'id' : 3,
+                'username' : 'DUODUO',
+                'age' : 27,
+                'sex' : '男'
+            },
+            {
+                'id' : 4,
+                'username' : '勇升',
+                'age' : 26,
+                'sex' : '男'
+            },
+            {
+                'id' : 5,
+                'username' : '小美',
+                'age' : 26,
+                'sex' : '女'
+            }
+        ];
+
+        /*document.ondblclick = function() {
+            alert(1);
+        }*/
+
+        /*
+            1、根据数据生成表格。
+            2、数据的添加
+            3、全选
+            4、上移下移删除
+            5、排序
+            6、反选
+            7、批量删除（被选中的删除）
+        */
+    </script>
+</head>
+
+<body>
+
+	<form action="" name="form" id="form">
+	    <p>
+	        姓名:<input type="text" name="username"/>
+	    </p>
+	    <p>
+	        年龄:<input type="text" name="age"/>
+	    </p>
+	    <p>
+	        性别: <select name="sex">
+	            <option value="男">男</option>
+	            <option value="女">女</option>
+	        </select>
+	    </p>
+	    <p>
+	        <input type="button" value="添加" name="add"/>
+	    </p>
+	</form>
+
+    <input type="button" value="反选" class="btn" id="fx">
+    <input type="button" value="批量删除"  class="btn" id="deleMore"> 
+    
+    <table id="tab1" width="100%" border="1">
+        <thead>
+	        <tr>
+	            <th>
+	                <input id="checkAll" type="checkbox" /> 全选
+	            </th>
+	            <th>ID</th>
+	            <th>姓名</th>
+	            <th>年龄</th>
+	            <th>性别</th>
+	            <th>操作</th>
+	        </tr>
+        </thead>
+
+        <tbody>
+           <!--  <tr>
+                <td>
+                    <input type="checkbox"/>
+                </td>
+                <td>1</td>
+                <td>LEO</td>
+                <td>36</td>
+                <td>男</td>
+                <td>
+                    <a href="javascript:;">上移</a> |
+                    <a href="javascript:;">下移</a> |
+                    <a href="javascript:;">删除</a>
+                </td>
+            </tr> -->
+        </tbody>
+    </table>
+    
+    <script>
+    	var tab1=document.getElementById("tab1");
+    	//生成数据
+    	for(var i=0;i<data.length;i++){
+    		var tr0=document.createElement("tr");
+    		//checkbox
+    		var td0=document.createElement("td");
+    		var check0=document.createElement("input");
+    		check0.type="checkbox";
+    		td0.appendChild(check0);
+    		tr0.appendChild(td0);
+    		//ID
+    		var td1=document.createElement("td");
+    		td1.innerHTML=data[i].id;
+    		tr0.appendChild(td1);
+    		//姓名
+    		var td2=document.createElement("td");
+    		td2.innerHTML=data[i].username;
+    		tr0.appendChild(td2);
+    		//年龄
+    		var td3=document.createElement("td");
+    		td3.innerHTML=data[i].age;
+    		tr0.appendChild(td3);
+    		//性别
+    		var td4=document.createElement("td");
+    		td4.innerHTML=data[i].sex;
+    		tr0.appendChild(td4);
+    		//操作
+    		var td5=document.createElement("td");
+    		var a1=document.createElement("a");
+    		var a2=document.createElement("a");
+    		var a3=document.createElement("a");
+    		a1.innerHTML="上移";
+    		a2.innerHTML="下移";
+    		a3.innerHTML="删除";
+    		td5.appendChild(a1);
+    		td5.appendChild(a2);
+    		td5.appendChild(a3)
+    		tr0.appendChild(td5);
+    		
+    		tab1.tBodies[0].appendChild(tr0);
+    	}
+    	//添加按钮点击
+    	var form=document.getElementById("form");
+    	var btnAdd=form.children[3].children[0];
+    	
+    	btnAdd.onclick=function(){
+    		if(form.children[0].children[0].value==""||form.children[1].children[0].value==""){
+    			alert("请输入内容！！！");
+    			return;
+    		}
+    		var tr_n=document.createElement("tr");
+    		//checkbox
+    		var td1_n=document.createElement("td");
+    		var check_n=document.createElement("input");
+    		check_n.type="checkbox";
+    		td1_n.appendChild(check_n);
+    		tr_n.appendChild(td1_n);
+    		//ID
+    		var td2_n=document.createElement("td");
+    		td2_n.innerHTML=tab1.tBodies[0].children.length+1;
+    		tr_n.appendChild(td2_n);
+    		//姓名
+    		var td3_n=document.createElement("td");
+    		td3_n.innerHTML=form.children[0].children[0].value;
+    		tr_n.appendChild(td3_n);
+    		//年龄
+    		var td4_n=document.createElement("td");
+    		td4_n.innerHTML=form.children[1].children[0].value;
+    		tr_n.appendChild(td4_n);
+    		//性别
+    		var td5_n=document.createElement("td");
+    		td5_n.innerHTML=form.children[2].children[0].value;
+    		tr_n.appendChild(td5_n);
+    		//操作
+    		var td5=document.createElement("td");
+    		var a1=document.createElement("a");
+    		var a2=document.createElement("a");
+    		var a3=document.createElement("a");
+    		a1.innerHTML="上移";
+    		a2.innerHTML="下移";
+    		a3.innerHTML="删除";
+    		td5.appendChild(a1);
+    		td5.appendChild(a2);
+    		td5.appendChild(a3)
+    		tr_n.appendChild(td5);
+    		
+    		tab1.tBodies[0].appendChild(tr_n);
+    	}
+    	//删除点击
+    	var tab1=document.getElementById("tab1");
+    	
+    	for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    		deleBtn=tab1.tBodies[0].children[i].children[5].children[2];
+    		deleBtn.onclick=function(){
+    			tab1.tBodies[0].removeChild(this.parentNode.parentNode);
+    		}
+    	}
+    	//上移下移
+    	for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    		//下移
+    		dowmMove=tab1.tBodies[0].children[i].children[5].children[1];
+    		dowmMove.onclick=function(){
+    			if(!this.parentNode.parentNode.nextElementSibling){
+    				return;
+    			}
+    			if(this.parentNode.parentNode.nextElementSibling){
+    				tab1.tBodies[0].insertBefore(this.parentNode.parentNode.nextElementSibling,this.parentNode.parentNode);
+    			}
+    		}
+    		//上移
+    		upMove=tab1.tBodies[0].children[i].children[5].children[0];
+    		upMove.onclick=function(){
+    			if(!this.parentNode.parentNode.nextElementSibling){
+    				return;
+    			}
+    			if(this.parentNode.parentNode.previousElementSibling){
+    				tab1.tBodies[0].insertBefore(this.parentNode.parentNode,this.parentNode.parentNode.previousElementSibling);
+    			}
+    		}
+    	}
+    	//每个checkboxs点击
+    	for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    		tab1.tBodies[0].children[i].firstChild.firstChild.onclick=function(){
+    			if(this.checked==false){
+    				allCheck.checked=false;
+    			}else{
+    				for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    					if(tab1.tBodies[0].children[i].firstChild.firstChild.checked==false){
+    						allCheck.checked=false;
+    						return;
+    					}else{
+    						allCheck.checked=true;
+    					}
+    				}
+    			}
+    		}
+    	}
+    	//全选点击
+    	var allCheck=tab1.tHead.children[0].children[0].children[0];//全选
+    	
+    	allCheck.onclick=function(){
+    		for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    			if(this.checked==true){
+    				tab1.tBodies[0].children[i].firstChild.firstChild.checked=true;
+    			}else{
+    				tab1.tBodies[0].children[i].firstChild.firstChild.checked=false;
+    			}
+    		}
+    	}
+    	//反选
+    	var fx=document.getElementById("fx");
+    	
+    	fx.onclick=function(){
+    		var num=0;
+    		for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    			if(tab1.tBodies[0].children[i].firstChild.firstChild.checked==false){
+    				tab1.tBodies[0].children[i].firstChild.firstChild.checked=true;
+    				num++;
+    				if(num==tab1.tBodies[0].children.length){
+    					allCheck.checked=true;
+    				}
+    			}else{
+    				tab1.tBodies[0].children[i].firstChild.firstChild.checked=false;
+    				allCheck.checked=false;
+    			}
+    		}
+    	}
+    	//批量删除
+    	var deleMore=document.getElementById("deleMore");
+    	deleMore.onclick=function(){
+    		for(var i=0;i<tab1.tBodies[0].children.length;i++){
+    			if(tab1.tBodies[0].children[i].firstChild.firstChild.checked){
+    				tab1.tBodies[0].removeChild(tab1.tBodies[0].children[i].firstChild.firstChild.parentNode.parentNode);
+    				i--;
+    			}
+    		}
+    	}
+    	//console.log(allCheck)
+    </script>
+</body>
+</html>
